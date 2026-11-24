@@ -58,16 +58,18 @@ Edit `app/src/main/java/com/wordnerd/dictionary/data/Words.kt`; each entry is on
 
 ## Releasing
 Releases are built and signed by GitHub Actions (`.github/workflows/release.yml`).
-1. Bump `versionCode` and `versionName` in `app/build.gradle.kts` and push to `main`.
-2. Optionally add `fastlane/metadata/android/en-US/changelogs/<versionCode>.txt`.
-3. On GitHub, draft a new release with the tag `v<versionName>` (e.g. `v1.5`) and
-   publish it. The release notes you write appear in the app's update banner.
-4. The workflow builds `WordNerd-<versionName>.apk`, signs it and attaches it to the
-   release. Installed apps will see the update within 12 hours, or right away via
-   Settings → Check for updates.
+1. Bump `versionCode` and `versionName` in `app/build.gradle.kts`.
+2. Write the release notes in `fastlane/metadata/android/en-US/changelogs/<versionCode>.txt`
+   (they appear in the app's update banner). Push to `main`.
+3. Run the **Release APK** workflow from the Actions tab. It builds and signs
+   `WordNerd-<versionName>.apk` and publishes release `v<versionName>` with it attached.
+   (Publishing a release by hand with that tag works too; the APK gets attached.)
 
-The workflow fails on purpose if the tag doesn't match `versionName`, so the app can
-never offer an "update" that is really the same version.
+Installed apps see the update within 12 hours, or right away via Settings → Check for
+updates.
+
+The workflow refuses to publish a version that already has a release, or a tag that
+doesn't match `versionName`, so the app never offers an "update" to the same version.
 
 Signing uses four repository secrets: `KEYSTORE_BASE64`, `KEYSTORE_PASSWORD`,
 `KEY_ALIAS`, `KEY_PASSWORD`. Every release must be signed with the same key, or Android
