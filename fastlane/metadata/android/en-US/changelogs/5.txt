@@ -1,0 +1,2 @@
+• Built-in updater: the app checks GitHub for new versions and installs them for you
+• Turn automatic checks on or off in Settings → App updates

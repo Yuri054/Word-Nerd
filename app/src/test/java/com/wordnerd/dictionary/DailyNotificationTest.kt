@@ -37,7 +37,8 @@ import org.robolectric.shadows.ShadowTextToSpeech
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 @Config(sdk = [34], qualifiers = "w411dp-h891dp-xxhdpi")
 class DailyNotificationTest {
-    @get:Rule val rule = createAndroidComposeRule<MainActivity>()
+    @get:Rule(order = 0) val offline = FakeGitHubRule()
+    @get:Rule(order = 1) val rule = createAndroidComposeRule<MainActivity>()
     private val context: Context get() = ApplicationProvider.getApplicationContext()
 
     private fun initWork() {

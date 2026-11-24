@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -35,5 +36,21 @@ class SettingsRepository(private val context: Context) {
 
     suspend fun setTime(hour: Int, minute: Int) {
         context.dataStore.edit { it[hourKey] = hour; it[minuteKey] = minute }
+    }
+
+    // ── App updates ──
+    private val autoUpdateKey = booleanPreferencesKey("auto_update_check")
+    private val lastUpdateCheckKey = longPreferencesKey("last_update_check")
+
+    val autoUpdateCheck: Flow<Boolean> = context.dataStore.data.map { it[autoUpdateKey] ?: true }
+
+    suspend fun setAutoUpdateCheck(enabled: Boolean) {
+        context.dataStore.edit { it[autoUpdateKey] = enabled }
+    }
+
+    suspend fun lastUpdateCheck(): Long = context.dataStore.data.first()[lastUpdateCheckKey] ?: 0L
+
+    suspend fun setLastUpdateCheck(time: Long) {
+        context.dataStore.edit { it[lastUpdateCheckKey] = time }
     }
 }

@@ -14,8 +14,8 @@ android {
         applicationId = "io.github.yuri054.wordnerd"
         minSdk = 26
         targetSdk = 35
-        versionCode = 4
-        versionName = "1.3"
+        versionCode = 5
+        versionName = "1.4"
     }
 
     // Optional release signing for your own GitHub releases. Put a keystore.properties
@@ -53,7 +53,10 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions { jvmTarget = "17" }
-    buildFeatures { compose = true }
+    buildFeatures {
+        compose = true
+        buildConfig = true
+    }
     testOptions {
         unitTests {
             isIncludeAndroidResources = true

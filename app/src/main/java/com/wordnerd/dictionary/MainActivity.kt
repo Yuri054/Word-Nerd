@@ -3,6 +3,7 @@ package com.wordnerd.dictionary
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.viewModels
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
@@ -54,6 +55,13 @@ class MainActivity : ComponentActivity() {
                 WordNerdApp(deepLinkWord = deepLinkWord.value, onDeepLinkHandled = { deepLinkWord.value = null })
             }
         }
+    }
+
+    private val vm: WordViewModel by viewModels()
+
+    override fun onResume() {
+        super.onResume()
+        vm.onAppResumed()
     }
 
     public override fun onNewIntent(intent: Intent) {

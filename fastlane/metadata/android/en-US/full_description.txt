@@ -12,4 +12,4 @@
 <li>Material You design with dynamic colour and dark theme</li>
 </ul>
 
-<p>Works fully offline. No ads, no tracking, no accounts, and no internet permission.</p>
+<p>Works fully offline. No ads, no tracking, no accounts. The only network use is checking GitHub for app updates, which you can turn off.</p>

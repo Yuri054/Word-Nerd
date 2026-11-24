@@ -20,7 +20,8 @@ import org.robolectric.annotation.GraphicsMode
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 @Config(sdk = [34], qualifiers = "w411dp-h891dp-xxhdpi")
 class ScreenshotTest {
-    @get:Rule val rule = createAndroidComposeRule<MainActivity>()
+    @get:Rule(order = 0) val offline = FakeGitHubRule()
+    @get:Rule(order = 1) val rule = createAndroidComposeRule<MainActivity>()
 
     @Test fun wordIdsAreUnique() {
         val dupes = ALL_WORDS.groupBy { it.id }.filterValues { it.size > 1 }.keys

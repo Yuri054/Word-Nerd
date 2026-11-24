@@ -24,6 +24,8 @@ Compose and Material 3 (Material You), in the style of Google's own apps.
 - **Daily word notification** (Settings, gear icon on Today): turn it on, pick a time,
   and get the word of the day every day; tapping it opens the word. Asks for the
   notification permission on Android 13+, and keeps its schedule through reboots.
+- **Updates itself from GitHub Releases**: a banner on Today when a new version is out,
+  with download progress and one-tap install. Can be turned off in Settings.
 - Copy and share any word.
 - Material You dynamic color on Android 12+ (with a teal fallback palette), dark theme,
   edge-to-edge, splash screen, and a themed adaptive icon.
@@ -37,16 +39,16 @@ living use, or a loanword English speakers genuinely use and write about (*hygge
 recorded once in old texts are left out.
 
 ## Install
-Download the APK from [Releases](https://github.com/Yuri054/Word-Nerd/releases)
-(Android 8.0 or later). An F-Droid listing is in progress; the recipe is in
-[`docs/fdroid/`](docs/fdroid/io.github.yuri054.wordnerd.yml) and the store listing in
-[`fastlane/`](fastlane/metadata/android/en-US).
+Download the latest `WordNerd-x.y.apk` from
+[Releases](https://github.com/Yuri054/Word-Nerd/releases) (Android 8.0 or later).
+After that, the app updates itself: it checks GitHub for new releases (Settings → App
+updates), downloads the APK and hands it to Android's installer.
 
 ## Build
 Requires JDK 17+ and the Android SDK (platform 35).
 ```
 ./gradlew assembleDebug        # app/build/outputs/apk/debug/app-debug.apk
-./gradlew assembleRelease      # unsigned unless keystore.properties exists (see app/build.gradle.kts)
+./gradlew assembleRelease      # signed if keystore.properties exists, else unsigned
 ./gradlew testDebugUnitTest    # Robolectric screenshots → app/build/screenshots
 ```
 
@@ -55,10 +57,21 @@ Edit `app/src/main/java/com/wordnerd/dictionary/data/Words.kt`; each entry is on
 `w(word, pronunciation, partOfSpeech, definition, origin, example, category)` call.
 
 ## Releasing
-1. Bump `versionCode` and `versionName` in `app/build.gradle.kts`.
-2. Add `fastlane/metadata/android/en-US/changelogs/<versionCode>.txt`.
-3. Commit, then tag `v<versionName>` (e.g. `v1.4`) and push the tag. F-Droid picks up
-   new tags automatically.
+Releases are built and signed by GitHub Actions (`.github/workflows/release.yml`).
+1. Bump `versionCode` and `versionName` in `app/build.gradle.kts` and push to `main`.
+2. Optionally add `fastlane/metadata/android/en-US/changelogs/<versionCode>.txt`.
+3. On GitHub, draft a new release with the tag `v<versionName>` (e.g. `v1.5`) and
+   publish it. The release notes you write appear in the app's update banner.
+4. The workflow builds `WordNerd-<versionName>.apk`, signs it and attaches it to the
+   release. Installed apps will see the update within 12 hours, or right away via
+   Settings → Check for updates.
+
+The workflow fails on purpose if the tag doesn't match `versionName`, so the app can
+never offer an "update" that is really the same version.
+
+Signing uses four repository secrets: `KEYSTORE_BASE64`, `KEYSTORE_PASSWORD`,
+`KEY_ALIAS`, `KEY_PASSWORD`. Every release must be signed with the same key, or Android
+will refuse to install it over the previous version. Keep a backup of the keystore.
 
 ## License
 [GPL-3.0](LICENSE)

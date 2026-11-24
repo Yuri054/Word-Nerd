@@ -51,6 +51,7 @@ import com.wordnerd.dictionary.WordViewModel
 import com.wordnerd.dictionary.data.ALL_WORDS
 import com.wordnerd.dictionary.data.Category
 import com.wordnerd.dictionary.data.Word
+import com.wordnerd.dictionary.ui.components.UpdateBanner
 import com.wordnerd.dictionary.ui.components.shareWord
 import com.wordnerd.dictionary.ui.theme.HeadwordFont
 import java.time.LocalDate
@@ -66,6 +67,8 @@ fun TodayScreen(
 ) {
     val favorites by vm.favorites.collectAsState()
     val discover by vm.discover.collectAsState()
+    val update by vm.update.collectAsState()
+    val bannerDismissed by vm.updateBannerDismissed.collectAsState()
     val context = LocalContext.current
     val scroll = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
@@ -99,6 +102,16 @@ fun TodayScreen(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(start = 4.dp),
                 )
+            }
+            if (!bannerDismissed) {
+                item(span = { GridItemSpan(maxLineSpan) }) {
+                    UpdateBanner(
+                        state = update,
+                        onUpdate = vm::downloadUpdate,
+                        onInstall = vm::installUpdate,
+                        onLater = vm::dismissUpdateBanner,
+                    )
+                }
             }
             item(span = { GridItemSpan(maxLineSpan) }) {
                 val w = vm.wordOfTheDay
