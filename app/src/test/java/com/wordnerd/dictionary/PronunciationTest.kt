@@ -40,12 +40,9 @@ class PronunciationTest {
         assertEquals("pronunciation entries for missing words: $unknown", emptySet<String>(), unknown)
     }
 
-    @Test fun nativeEntriesAlwaysHaveAnEnglishFallback() {
+    @Test fun nativeEntriesHaveValidLocales() {
         SPOKEN.forEach { (id, s) ->
-            if (s.locale != null) {
-                assertTrue("$id needs an English fallback", !s.english.isNullOrBlank())
-                assertTrue("$id has a bad locale ${s.locale}", Locale.forLanguageTag(s.locale!!).language.isNotEmpty())
-            }
+            assertTrue("$id has a bad locale ${s.locale}", Locale.forLanguageTag(s.locale).language.length == 2)
         }
     }
 
@@ -53,8 +50,11 @@ class PronunciationTest {
         assertEquals("Kerfuffle", say("kerfuffle").first)
     }
 
-    @Test fun misleadingSpellingsUseTheRespelling() {
-        assertEquals("vittles", say("victuals").first)
+    @Test fun englishWordsAreNeverRespelled() {
+        // Respellings like "veh lee ih tee" were read chunk by chunk; the real spelling is better.
+        assertEquals("Velleity", say("velleity").first)
+        assertEquals("Victuals", say("victuals").first)
+        assertEquals("Chutzpah", say("chutzpah").first)
     }
 
     @Test fun loanwordUsesNativeVoiceWhenInstalled() {
@@ -64,8 +64,8 @@ class PronunciationTest {
         assertEquals("de", lang?.language)
     }
 
-    @Test fun loanwordFallsBackToEnglishRespellingWithoutThatVoice() {
-        assertEquals("velt shmerts", say("weltschmerz").first)
+    @Test fun loanwordFallsBackToItsSpellingWithoutThatVoice() {
+        assertEquals("Weltschmerz", say("weltschmerz").first)
     }
 
     @Test fun japaneseUsesNativeScript() {

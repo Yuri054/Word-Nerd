@@ -10,7 +10,7 @@ import java.util.Locale
  * Text-to-speech wrapper that only binds the (heavy, out-of-process) TTS engine the first
  * time something is actually spoken, and keeps a single instance for the whole app session.
  *
- * Words are not simply read from their spelling: see [com.wordnerd.dictionary.data.Spoken].
+ * Loanwords may use a native voice: see [com.wordnerd.dictionary.data.Spoken].
  */
 class Speaker(context: Context) {
     private val appContext = context.applicationContext
@@ -40,12 +40,12 @@ class Speaker(context: Context) {
     private fun say(word: Word) {
         val engine = tts ?: return
         val spoken = spokenFor(word)
-        val native = spoken.locale?.let { Locale.forLanguageTag(it) }
-        if (native != null && engine.trySetLanguage(native)) {
+        val native = spoken?.let { Locale.forLanguageTag(it.locale) }
+        if (spoken != null && native != null && engine.trySetLanguage(native)) {
             engine.speak(spoken.native ?: word.word, TextToSpeech.QUEUE_FLUSH, null, word.id)
         } else {
             engine.trySetLanguage(Locale.US)
-            engine.speak(spoken.english ?: word.word, TextToSpeech.QUEUE_FLUSH, null, word.id)
+            engine.speak(word.word, TextToSpeech.QUEUE_FLUSH, null, word.id)
         }
     }
 

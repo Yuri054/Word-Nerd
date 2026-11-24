@@ -1,0 +1,3 @@
+Pronunciation fix:
+• English words are read from their real spelling again. The phonetic respellings in 1.5 were read syllable by syllable and made many words worse.
+• Loanwords like Weltschmerz, ennui and tsundoku still use your phone's German, French or Japanese voice when it's installed.
