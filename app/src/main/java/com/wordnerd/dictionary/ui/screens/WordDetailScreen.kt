@@ -116,7 +116,7 @@ fun WordDetailScreen(
                     )
                     Spacer(Modifier.height(8.dp))
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        FilledIconButton(onClick = { vm.speak(word.word) }) {
+                        FilledIconButton(onClick = { vm.speak(word) }) {
                             Icon(Icons.AutoMirrored.Outlined.VolumeUp, contentDescription = "Pronounce")
                         }
                         Spacer(Modifier.width(12.dp))

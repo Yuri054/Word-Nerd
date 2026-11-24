@@ -1,0 +1,4 @@
+More accurate pronunciation:
+• Words with misleading spellings (like "victuals" → "vittles") are now read correctly
+• Loanwords like Weltschmerz, ennui, saudade and tsundoku use your phone's German, French, Portuguese or Japanese voice when installed, and an English approximation otherwise
+• Speech is slightly slower so unfamiliar words are easier to catch

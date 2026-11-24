@@ -119,7 +119,7 @@ fun TodayScreen(
                     word = w,
                     isFavorite = w.id in favorites,
                     onClick = { onOpenWord(w) },
-                    onSpeak = { vm.speak(w.word) },
+                    onSpeak = { vm.speak(w) },
                     onFavorite = { vm.toggleFavorite(w.id) },
                     onShare = { shareWord(context, w) },
                 )

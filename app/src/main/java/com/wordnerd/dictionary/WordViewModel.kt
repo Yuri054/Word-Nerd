@@ -35,7 +35,7 @@ class WordViewModel(app: Application) : AndroidViewModel(app) {
 
     // ── Pronunciation (engine is created lazily on first use) ──
     private val speaker = Speaker(app)
-    fun speak(text: String) = speaker.speak(text)
+    fun speak(word: Word) = speaker.speak(word)
     override fun onCleared() = speaker.shutdown()
 
     // ── Daily notification ──
