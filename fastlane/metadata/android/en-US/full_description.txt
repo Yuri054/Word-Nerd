@@ -8,6 +8,7 @@
 <li>Discover: shuffle through random words</li>
 <li>Browse A–Z, search words, meanings and origins (try "Yiddish" or "Greek")</li>
 <li>11 themes, including Nature &amp; Sky, Moods &amp; Feelings, Mischief &amp; Nonsense, Mind &amp; Thought and Words from Names</li>
+<li>History of past words of the day</li>
 <li>Save favourites, copy and share words</li>
 <li>Material You design with dynamic colour and dark theme</li>
 </ul>

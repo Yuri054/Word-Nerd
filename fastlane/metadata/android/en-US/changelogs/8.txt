@@ -1,0 +1,4 @@
+Word of the day history:
+• Past words of the day now appear on the Today screen, with "See all" for the full list grouped by month
+• Every day is collected, even days you didn't open the app (back to when you installed it, up to 60 days)
+• Tap any past word to open it, or bookmark it straight from the list

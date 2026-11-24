@@ -18,6 +18,7 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.wordnerd.dictionary.MainActivity
 import com.wordnerd.dictionary.R
+import com.wordnerd.dictionary.data.HistoryRepository
 import com.wordnerd.dictionary.data.SettingsRepository
 import com.wordnerd.dictionary.data.Word
 import com.wordnerd.dictionary.data.wordOfTheDay
@@ -108,6 +109,7 @@ class DailyWordWorker(context: Context, params: WorkerParameters) : CoroutineWor
     override suspend fun doWork(): Result {
         val settings = SettingsRepository(applicationContext).current()
         if (!settings.enabled) return Result.success()
+        HistoryRepository(applicationContext).recordThrough()
         DailyWordNotifier.show(applicationContext)
         DailyWordNotifier.schedule(applicationContext, settings.hour, settings.minute)
         return Result.success()

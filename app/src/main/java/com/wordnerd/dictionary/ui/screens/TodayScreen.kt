@@ -35,6 +35,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -64,11 +65,13 @@ fun TodayScreen(
     onOpenWord: (Word) -> Unit,
     onOpenCategory: (Category) -> Unit,
     onOpenSettings: () -> Unit,
+    onOpenHistory: () -> Unit,
 ) {
     val favorites by vm.favorites.collectAsState()
     val discover by vm.discover.collectAsState()
     val update by vm.update.collectAsState()
     val bannerDismissed by vm.updateBannerDismissed.collectAsState()
+    val history by vm.history.collectAsState()
     val context = LocalContext.current
     val scroll = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
@@ -126,6 +129,32 @@ fun TodayScreen(
             }
             item(span = { GridItemSpan(maxLineSpan) }) {
                 DiscoverCard(discover, onClick = { onOpenWord(discover) }, onShuffle = vm::shuffle)
+            }
+            if (history.isNotEmpty()) {
+                item(span = { GridItemSpan(maxLineSpan) }) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(start = 4.dp, top = 12.dp),
+                    ) {
+                        Text(
+                            "Past words of the day",
+                            style = MaterialTheme.typography.titleLarge,
+                            modifier = Modifier.weight(1f),
+                        )
+                        TextButton(onClick = onOpenHistory) { Text("See all") }
+                    }
+                }
+                item(span = { GridItemSpan(maxLineSpan) }) {
+                    Card(
+                        shape = RoundedCornerShape(24.dp),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        history.take(3).forEach { e ->
+                            HistoryItem(e, e.word.id in favorites, onOpenWord) { vm.toggleFavorite(e.word.id) }
+                        }
+                    }
+                }
             }
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(

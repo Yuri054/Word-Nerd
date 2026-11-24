@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.wordnerd.dictionary.data.ALL_WORDS
 import com.wordnerd.dictionary.data.Category
 import com.wordnerd.dictionary.data.FavoritesRepository
+import com.wordnerd.dictionary.data.HistoryEntry
+import com.wordnerd.dictionary.data.HistoryRepository
 import com.wordnerd.dictionary.data.DailyNotificationSettings
 import com.wordnerd.dictionary.data.SettingsRepository
 import com.wordnerd.dictionary.data.Word
@@ -15,6 +17,8 @@ import com.wordnerd.dictionary.update.UpdateChecker
 import com.wordnerd.dictionary.update.UpdateInstaller
 import com.wordnerd.dictionary.update.UpdateState
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import java.time.LocalDate
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -32,6 +36,18 @@ class WordViewModel(app: Application) : AndroidViewModel(app) {
         repo.favorites.stateIn(viewModelScope, SharingStarted.Eagerly, emptySet())
 
     val wordOfTheDay: Word = wordOfTheDay()
+
+    // ── Word of the day history ──
+    private val historyRepo = HistoryRepository(app)
+
+    /** Past days only (today is shown in the hero card), newest first. */
+    val history: StateFlow<List<HistoryEntry>> = historyRepo.entries
+        .map { list -> list.filter { it.date.isBefore(LocalDate.now()) } }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+
+    init {
+        viewModelScope.launch { historyRepo.recordThrough() }
+    }
 
     // ── Pronunciation (engine is created lazily on first use) ──
     private val speaker = Speaker(app)

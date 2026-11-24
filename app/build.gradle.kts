@@ -14,8 +14,8 @@ android {
         applicationId = "io.github.yuri054.wordnerd"
         minSdk = 26
         targetSdk = 35
-        versionCode = 7
-        versionName = "1.6"
+        versionCode = 8
+        versionName = "1.7"
     }
 
     // Optional release signing for your own GitHub releases. Put a keystore.properties

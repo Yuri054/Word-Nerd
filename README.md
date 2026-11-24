@@ -14,6 +14,7 @@ Compose and Material 3 (Material You), in the style of Google's own apps.
 
 ## Features
 - **Word of the day**: a new word every day, with Save and Share buttons.
+- **History**: every past word of the day, on Today and in a full month-by-month list.
 - **Discover**: shuffle through random words.
 - **Browse**: the whole lexicon A–Z with sticky letter headers, a pill search bar that
   searches words, meanings and origins (try "Yiddish" or "Greek"), and filter chips

@@ -34,6 +34,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.wordnerd.dictionary.data.wordById
 import com.wordnerd.dictionary.ui.screens.BrowseScreen
+import com.wordnerd.dictionary.ui.screens.HistoryScreen
 import com.wordnerd.dictionary.notifications.DailyWordNotifier
 import com.wordnerd.dictionary.ui.screens.SavedScreen
 import com.wordnerd.dictionary.ui.screens.SettingsScreen
@@ -125,7 +126,11 @@ private fun WordNerdApp(
                     onOpenWord = { openWord(it.id) },
                     onOpenCategory = { vm.setQuery(""); vm.setCategory(it); goTab(Tab.BROWSE) },
                     onOpenSettings = { nav.navigate("settings") },
+                    onOpenHistory = { nav.navigate("history") },
                 )
+            }
+            composable("history") {
+                HistoryScreen(vm, onBack = { nav.popBackStack() }, onOpenWord = { openWord(it.id) })
             }
             composable("settings") { SettingsScreen(vm, onBack = { nav.popBackStack() }) }
             composable(Tab.BROWSE.route) { BrowseScreen(vm) { openWord(it.id) } }
